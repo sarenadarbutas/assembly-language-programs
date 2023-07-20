@@ -1,0 +1,23 @@
+###################################################################
+#  This program performs a simple calculation.
+#  Author: Sarena Darbutas
+###################################################################
+	.data
+hexa:	.word  	0x3f
+string: .asciiz "0x3f & 0xaa | 0x03 = "
+
+	.globl 	main
+	.text
+main:
+################# Exercise 1 ######################################
+	lw		$t1,hexa	  # j = hexa 
+	andi		$t1,0xaa	  # && j = 0xaa
+	ori		$t1,0x03	  # || j = 0x03
+	
+	li		$v0,4		  # create a string 
+	la		$a0, string
+	syscall
+	
+	li		$v0,34		 # system.out.print(j)
+	move		$a0, $t1
+	syscall

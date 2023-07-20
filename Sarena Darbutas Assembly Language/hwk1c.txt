@@ -1,0 +1,64 @@
+###################################################################
+#  This program will show you a sprite that moves between two words.
+#  there will loops, ror, and rol inorder to move the sprite.
+#  Author: Sarena Darbutas
+###################################################################
+	.data
+sprite:	.word	0x0ccccccc 
+sprite2:.word   0xcccccccc
+
+	.globl 	main
+	.text
+
+main:
+	la	$s4,sprite	
+	la	$s5,sprite2
+	li	$s2,7		# count = 7
+	lw 	$t1, sprite
+	lw	$t2,sprite2
+	
+reset: 	
+moveStart:			#do{
+	ror 	$t1,$t1,4	#rotating sprite
+	addi 	$s2,$s2,-1	#count--
+	sw	$t1,sprite
+	bne	$s2,$0,moveStart	#while(count<0)}
+	
+
+wordSwap: 			#do{
+	lw	$t3,sprite2	
+	sw	$t3,($s4)
+	lw	$t4,sprite
+	ror	$t1,$t1,4	#rotating sprite
+	sw	$t1,($s5)	
+	
+	li	$s2,7		#reset count
+
+moveSecondWord:			#do{
+	ror	$t1,$t1,4	#rotate sprite
+	addi 	$s2,$s2,-1	# count--
+	sw	$t1,sprite2
+	bne	$s2,$0,moveSecondWord	#while(count<0)}
+	
+	li	$s2,7		#reset count
+
+moveBack:			#do{
+	rol	$t1,$t1,4	#rotating sprite
+	addi	$s2,$s2,-1	#count--
+	sw	$t1,sprite2	
+	bne	$s2,0,moveBack	#while(count<0)}
+	
+	li	$s2,7		#reset count
+	
+	rol	$t1,$t1,4	#rotate sprite offset
+	sw	$t2,sprite2
+	sw	$t1,sprite
+endMove:			#do{
+	rol	$t1,$t1,4	#rotating sprites
+	addi	$s2,$s2,-1	#count--
+	sw	$t1,sprite	
+	bne	$s2,0,endMove	#while(count<0)}
+	
+	li	$s2,7		#reset count
+	
+	b 	reset		#branch back to start of program

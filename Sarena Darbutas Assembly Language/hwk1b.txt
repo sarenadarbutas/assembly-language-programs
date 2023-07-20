@@ -1,0 +1,35 @@
+###################################################################
+#  This program will show a series of snapshots in the memory 
+#  segement of a sprite moving between a word.
+#
+#  Author: Sarena Darbutas
+###################################################################
+	.data
+sprite:	.word	0x0ccccccc 
+
+	.globl 	main
+	.text
+main:
+
+	
+	li	$s2,7		#count = 8
+	lw 	$t1, sprite	
+	
+		
+Loop1:				# do{
+	ror 	$t1,$t1,4	#rotating sprite
+	addi 	$s2,$s2,-1	#count--
+	sw	$t1,sprite	
+	bne	$s2,$0,Loop1	#while(count<0)}
+	
+	li	$s2,7		#reset count
+	
+Loop2:				#do{
+	rol	$t1,$t1,4	#rotating sprite
+	addi 	$s2,$s2,-1	#count--
+	sw	$t1,sprite	
+	bne	$s2,$0,Loop2	#while(count<0)}
+
+	
+	li	$v0,10
+	syscall
